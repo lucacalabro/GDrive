@@ -26,4 +26,5 @@ urlpatterns = [
     # Metodo per caricare file dal server a  GDrive
     path('uploadfile/upload_gdrive/', upload_gdrive, name="upload_gdrive"),  # <--
 
+
 ]

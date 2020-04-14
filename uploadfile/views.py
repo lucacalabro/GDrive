@@ -9,6 +9,7 @@ import google.oauth2.credentials
 
 from documents import path as pathuploadsfile
 from documents import listfiles as listuploadsfile
+from documents import upload_folder_id
 from configurationfile import path as pathconfigurationfile
 from configurationfile import listfiles as listconfigurationfile
 
@@ -18,9 +19,6 @@ from django.http import HttpResponse
 from .forms import DocumentForm
 
 import mimetypes
-
-
-
 
 
 def upload_gdrive(request):
@@ -41,15 +39,17 @@ def upload_gdrive(request):
     path_file_to_upload = pathuploadsfile + "\\" + listuploadsfile[0]
 
     # file_to_upload = drive.CreateFile(metadata={"title": listuploadsfile[0]})
-    file_to_upload = drive.CreateFile()
+
+    file_to_upload = drive.CreateFile({"title": listuploadsfile[0], 'parents': [{'id': upload_folder_id}]})
 
     file_to_upload.SetContentFile(path_file_to_upload)
 
     file_to_upload.Upload()
 
-    return HttpResponse(path_credentials + path_file_to_upload + YOUR_ACCESS_TOKEN_IN_JSON_FORMAT)
+    #return HttpResponse(path_credentials + path_file_to_upload + YOUR_ACCESS_TOKEN_IN_JSON_FORMAT)
     # return HttpResponse(len(listuploadsfile[0]))
     # return HttpResponse(os.listdir())
+    return HttpResponse("Ok, il file è stato caricato correttamente.")
 
 
 # Carica un file sul file sitem del server nella cartella documents
@@ -69,3 +69,7 @@ def upload_file(request):
     return render(request, 'upload.html', {
         'form': form
     })
+
+
+
+
