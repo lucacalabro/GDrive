@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+
+{% block content %}
+    {% if msg %}
+        {{ msg }}
+    {% endif %}
+
+<a href="{% url 'home' %}">Return</a>
+{% endblock %}

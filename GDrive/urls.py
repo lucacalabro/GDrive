@@ -15,16 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from uploadfile.views import upload_file, upload_gdrive
+from formuploadtogdrive.views import index, uploadok
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Metodo per caricare file sul server
-    path('uploadfile/upload_file/', upload_file, name="upload_file"),  # <--
+    path('', index, name='home'),
 
-    # Metodo per caricare file dal server a  GDrive
-    path('uploadfile/upload_gdrive/', upload_gdrive, name="upload_gdrive"),  # <--
+    path('formuploadtogdrive/uploadok', uploadok, name='uploadok'),
+
+
 
 
 ]
