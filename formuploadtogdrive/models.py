@@ -47,10 +47,23 @@ def path_and_rename(instance, filename):
     return os.path.join(upload_to, filename)
 
 
+
+# Questi sono i dati letti da ESSE3
+# Servono ad assegnare valori ai campi non mostrati nel form
+dict_user_data = dati_utente()
+MATRICOLA = dict_user_data["MATRICOLA"]
+NOME = dict_user_data["NOME"]
+COGNOME = dict_user_data["COGNOME"]
+VERSIONE = dict_user_data["VERSIONE"]
+
+
 class User(models.Model):
     field1 = models.CharField(max_length=20, blank=False)
     field2 = models.CharField(max_length=20, blank=False)
-    # document = models.FileField(upload_to='documents/', blank=False)
+    matricola = models.CharField(default=MATRICOLA, max_length=20)
+    nome = models.CharField(default=NOME, max_length=20)
+    cognome = models.CharField(default=COGNOME, max_length=20)
+    versione = models.CharField(default=VERSIONE, max_length=20)
     document = models.FileField(upload_to=path_and_rename, blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
