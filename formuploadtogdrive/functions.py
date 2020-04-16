@@ -3,9 +3,9 @@
 # restituisce una tupla con valori letti da ESSE3
 def dati_utente():
     # Questi dati andranno valorizzati leggendo da Esse3
-    MATRICOLA = 666666
-    NOME = "TIZIO"
-    COGNOME = "CAIO"
+    MATRICOLA = "066666"
+    NOME = "PINCO"
+    COGNOME = "PALLINO"
     VERSIONE = "v1"
 
     return {"MATRICOLA": MATRICOLA, "NOME": NOME, "COGNOME": COGNOME, "VERSIONE": VERSIONE}
