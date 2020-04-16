@@ -48,8 +48,8 @@ def path_and_rename(instance, filename):
 
 
 class User(models.Model):
-    first_name = models.CharField(max_length=20, blank=False)
-    last_name = models.CharField(max_length=20, blank=False)
+    field1 = models.CharField(max_length=20, blank=False)
+    field2 = models.CharField(max_length=20, blank=False)
     # document = models.FileField(upload_to='documents/', blank=False)
     document = models.FileField(upload_to=path_and_rename, blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)

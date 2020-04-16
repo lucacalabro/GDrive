@@ -1,6 +1,6 @@
 import os
 
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from oauth2client.client import OAuth2Credentials
 from pydrive.auth import GoogleAuth
@@ -12,8 +12,6 @@ from configurationfile import path as pathconfigurationfile
 from .forms import UserForm
 from .functions import dati_utente
 
-import time
-
 
 # Create your views here.
 def index(request):
@@ -23,7 +21,6 @@ def index(request):
         if form.is_valid():
             form.save()
             # Caricamento file in GDrive
-            # time.sleep(10)
 
             # Apertura del file contenente le credenziali d'accesso aGDrive con l'utente di servizio serviziwebsi@unimib.it
 
@@ -62,8 +59,6 @@ def index(request):
             # lista file nella cartella del file system
             lf = os.listdir(path_dir_file)
 
-            # return HttpResponse(path_dir_file)
-
             # lista file senza estensione
             def get_matricola(T):
                 return T.split('_')[0]
@@ -81,10 +76,9 @@ def index(request):
             filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
 
             path_file_to_upload_to_GDrive = os.path.join(path_dir_file, filename)
-            # path_file_to_upload_to_GDrive = os.path.join(path_dir_file, docfile.name)
 
             file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': upload_folder_id}]})
-            # return HttpResponse(path_file_to_upload_to_GDrive)
+
             file_to_upload.SetContentFile(path_file_to_upload_to_GDrive)
 
             file_to_upload.Upload()
