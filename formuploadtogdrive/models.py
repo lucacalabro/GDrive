@@ -38,7 +38,7 @@ def path_and_rename(instance, filename):
     # Lista fatta di matricole uguali alla matricola dello studente
     lm = [m for m in lm if m == MATRICOLA]
 
-    # Contro quanti elementi ci sono ed assegno l'indice incrementando di 1
+    # Conto quanti elementi ci sono ed assegno l'indice incrementando di 1
     indice = len(lm) + 1
 
     filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)

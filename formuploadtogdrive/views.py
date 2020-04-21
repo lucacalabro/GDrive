@@ -6,7 +6,7 @@ from oauth2client.client import OAuth2Credentials
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-from GDrive.settings import BASE_DIR, upload_folder_id
+from GDrive.settings import BASE_DIR, upload_folder_id, team_drive_id
 from configurationfile import listfiles as listconfigurationfile
 from configurationfile import path as pathconfigurationfile
 from .forms import UserForm
@@ -77,11 +77,12 @@ def index(request):
 
             path_file_to_upload_to_GDrive = os.path.join(path_dir_file, filename)
 
-            file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': upload_folder_id}]})
+            # file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': upload_folder_id}]})
+            file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': team_drive_id}]})
 
             file_to_upload.SetContentFile(path_file_to_upload_to_GDrive)
 
-            file_to_upload.Upload()
+            file_to_upload.Upload(param={'supportsTeamDrives': True})
 
             # Rimozione file dal file system
             # if os.path.exists(path_file_to_upload_to_GDrive):
