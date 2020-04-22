@@ -15,15 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from formuploadtogdrive.views import index, uploadok, list_file_in_folder
+from formuploadtogdrive.views import index, index2, uploadok, uploadok2, list_file_in_folder, list_file_in_folder2
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', index, name='home'),
+    path('uploadtogdrive', index, name='uploadtogdrive'),
+    path('uploadtoteamdrive', index2, name='uploadtoteamdrive'),
 
     path('formuploadtogdrive/uploadok', uploadok, name='uploadok'),
-    path('formuploadtogdrive/listfileinfolder', list_file_in_folder, name='list_file_in_folder'),
+    path('formuploadtoteamdrive/uploadok2', uploadok2, name='uploadok2'),
+
+    path('formuploadtogdrive/listfileingdrive', list_file_in_folder, name='list_file_in_folder'),
+    path('formuploadtogdrive/listfileinteamdrive', list_file_in_folder2, name='list_file_in_folder2'),
 
 
 
