@@ -1,6 +1,6 @@
 import os
 
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from oauth2client.client import OAuth2Credentials
 from pydrive.auth import GoogleAuth
@@ -82,7 +82,43 @@ def index(request):
 
             file_to_upload.SetContentFile(path_file_to_upload_to_GDrive)
 
+            # file_to_upload.Upload()
             file_to_upload.Upload(param={'supportsTeamDrives': True})
+
+            # Imposto i permessi per l'utente che carica il file
+            #
+            # Fonti:
+            # https://developers.google.com/drive/api/v3/reference/permissions
+            # https://developers.google.com/drive/api/v3/manage-sharing
+
+            permission = file_to_upload.InsertPermission(
+                {
+                    "kind": "drive#permission",
+                    #"id": file_to_upload['id'],
+                    "type": "user",
+                    "value": "l.calabro2@campus.unimib.it",
+                    # "domain": "unimib.it",
+                    "role": "reader",
+                    # "allowFileDiscovery": False,
+                    # "displayName": string,
+                    # "photoLink": string,
+                    # "expirationTime": datetime,
+                    # "permissionDetails": [
+                    #     {
+                    #         "permissionType": string,
+                    #         "role": string,
+                    #         "inheritedFrom": string,
+                    #         "inherited": boolean
+                    #     }
+                    # ],
+                    # "deleted": boolean
+                }
+            )
+
+            # SHARABLE LINK
+            link = file_to_upload['alternateLink']
+
+            print(link)
 
             # Rimozione file dal file system
             # if os.path.exists(path_file_to_upload_to_GDrive):
@@ -101,3 +137,34 @@ def index(request):
 
 def uploadok(request):
     return render(request, 'uploadok.html', {'msg': 'Dati caricati correttamente'})
+
+
+def list_file_in_folder(request):
+    path_credentials = pathconfigurationfile + "\\" + listconfigurationfile[0]
+
+    with open(path_credentials) as f:
+        YOUR_ACCESS_TOKEN_IN_JSON_FORMAT = f.readline()
+
+    gauth = GoogleAuth()
+
+    gauth.credentials = OAuth2Credentials.from_json(YOUR_ACCESS_TOKEN_IN_JSON_FORMAT)
+
+    drive = GoogleDrive(gauth)
+
+    file_list = drive.ListFile(
+        {'q': "trashed=false",
+         'corpora': "teamDrive",
+         'teamDriveId': team_drive_id,
+         'includeTeamDriveItems': True,
+         'supportsTeamDrives': True
+         }).GetList()
+
+    listafile = ""
+
+    for file1 in file_list:
+        # print('-title: %s, -id: %s, -sharedlink: %s' % (file1['title'], file1['id'], file1['alternateLink']))
+        listafile += 'title: {}<br>id: {}<br>sharedlink: <a href="{}" target="_blank">sharablelink</a><br><br>'.format(
+            file1['title'], file1['id'],
+            file1['alternateLink'])
+
+    return HttpResponse(listafile)

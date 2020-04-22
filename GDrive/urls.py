@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from formuploadtogdrive.views import index, uploadok
+from formuploadtogdrive.views import index, uploadok, list_file_in_folder
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,6 +23,7 @@ urlpatterns = [
     path('', index, name='home'),
 
     path('formuploadtogdrive/uploadok', uploadok, name='uploadok'),
+    path('formuploadtogdrive/listfileinfolder', list_file_in_folder, name='list_file_in_folder'),
 
 
 
