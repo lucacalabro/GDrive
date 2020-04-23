@@ -78,72 +78,17 @@ def index(request):
             path_file_to_upload_to_GDrive = os.path.join(path_dir_file, filename)
 
             file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': upload_folder_id}]})
-            # file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': team_drive_id}]})
 
             file_to_upload.SetContentFile(path_file_to_upload_to_GDrive)
 
-            # file_to_upload.Upload()
             file_to_upload.Upload(param={'supportsAllDrives': True})
 
             # Imposto i permessi per l'utente che carica il file
-            #
-            # Fonti:
-            # https://developers.google.com/drive/api/v3/reference/permissions
-            # https://developers.google.com/drive/api/v3/manage-sharing
 
-            permission = file_to_upload.InsertPermission(
-
-                {
-                    "kind": "drive#permission",
-                    # "id": drive['permissionId'],
-                    "type": "user",
-                    "value": "l.calabro2@campus.unimib.it",
-                    "domain": "unimib.it",
-                    "role": "reader",
-                    'sendNotificationEmails': 'false'
-                    # "allowFileDiscovery": False,
-                    # "displayName": string,
-                    # "photoLink": string,
-                    # "expirationTime": datetime,
-                    # "teamDrivePermissionDetails": [
-                    #     {
-                    #         "teamDrivePermissionType": "file",
-                    #         "role": "reader",
-                    #         "inheritedFrom": file_to_upload['id'],
-                    #         "inherited": True
-                    #     }
-                    # ],
-                    # "permissionDetails": [
-                    #     {
-                    #         "permissionType": "file",
-                    #         "role": "reader",
-                    #         "inheritedFrom": file_to_upload['id'],
-                    #         "inherited": True
-                    #     }
-                    # ],
-                    # "deleted": boolean
-                }  # , sendNotificationEmails=False
-            )
-
-            # permission = file_to_upload.permissions().insert(fileId=file_to_upload['id'], body=new_permission).execute()
-
-            # permissions = file_to_upload.GetPermissions()
-            #
-            # print(permissions)
-
-            # Rimozione file dal file system
-            # if os.path.exists(path_file_to_upload_to_GDrive):
-            #     os.remove(path_file_to_upload_to_GDrive)
-            # import shutil
-            # shutil.move(path_file_to_upload_to_GDrive, "/"+filename)
-
-            # print(drive.GetAbout())
-            print(file_to_upload)
-            file2 = drive.CreateFile({'id': file_to_upload['id']})
-            print(file2)
-            # print(file2.GetPermissions())
-            # print(file_to_upload['parents'][0]['id'])
-            # print(file_to_upload['id'])
+            file_to_upload.InsertPermission(
+                {'type': 'user',
+                 'value': 'l.calabro2@campus.unimib.it',
+                 'role': 'reader'}, sendNotificationEmails=False)
 
             return HttpResponseRedirect(reverse("uploadok"))
 
@@ -218,7 +163,6 @@ def index2(request):
 
             path_file_to_upload_to_GDrive = os.path.join(path_dir_file, filename)
 
-            # file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': upload_folder_id}]})
             file_to_upload = drive.CreateFile(
                 {"title": filename, 'parents': [{"kind": "drive#fileLink", 'id': team_drive_id}]})
 
@@ -228,15 +172,11 @@ def index2(request):
             file_to_upload.Upload(param={'supportsAllDrives': True})
 
             # Imposto i permessi per l'utente che carica il file
-            #
-            # Fonti:
-            # https://developers.google.com/drive/api/v3/reference/permissions
-            # https://developers.google.com/drive/api/v3/manage-sharing
             try:
                 file_to_upload.InsertPermission(
                     {'type': 'user',
                      'value': 'l.calabro2@campus.unimib.it',
-                     'role': 'reader'})
+                     'role': 'reader'}, sendNotificationEmails=False)
             except:
                 pass
 
