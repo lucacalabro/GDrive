@@ -11,10 +11,9 @@ from configurationfile import listfiles as listconfigurationfile
 from configurationfile import path as pathconfigurationfile
 from .forms import UserForm
 from .functions import dati_utente
-import googleapiclient
 
 
-#Carica su GDrive
+# Carica su GDrive
 def index(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
@@ -94,13 +93,14 @@ def index(request):
 
             permission = file_to_upload.InsertPermission(
 
-                new_permission={
+                {
                     "kind": "drive#permission",
                     # "id": drive['permissionId'],
                     "type": "user",
                     "value": "l.calabro2@campus.unimib.it",
                     "domain": "unimib.it",
                     "role": "reader",
+                    'sendNotificationEmails': 'false'
                     # "allowFileDiscovery": False,
                     # "displayName": string,
                     # "photoLink": string,
@@ -122,7 +122,7 @@ def index(request):
                     #     }
                     # ],
                     # "deleted": boolean
-                }
+                }  # , sendNotificationEmails=False
             )
 
             # permission = file_to_upload.permissions().insert(fileId=file_to_upload['id'], body=new_permission).execute()
@@ -154,7 +154,7 @@ def index(request):
     return render(request, 'index.html', {'form': form})
 
 
-#Carica su team drive
+# Carica su team drive
 def index2(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
@@ -219,7 +219,8 @@ def index2(request):
             path_file_to_upload_to_GDrive = os.path.join(path_dir_file, filename)
 
             # file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': upload_folder_id}]})
-            file_to_upload = drive.CreateFile({"title": filename, 'parents': [{'id': team_drive_id}]})
+            file_to_upload = drive.CreateFile(
+                {"title": filename, 'parents': [{"kind": "drive#fileLink", 'id': team_drive_id}]})
 
             file_to_upload.SetContentFile(path_file_to_upload_to_GDrive)
 
@@ -231,59 +232,13 @@ def index2(request):
             # Fonti:
             # https://developers.google.com/drive/api/v3/reference/permissions
             # https://developers.google.com/drive/api/v3/manage-sharing
-
-            # permission = file_to_upload.InsertPermission(
-            #
-            #     new_permission={
-            #         "kind": "drive#permission",
-            #         # "id": drive['permissionId'],
-            #         "type": "user",
-            #         "value": "l.calabro2@campus.unimib.it",
-            #         "domain": "unimib.it",
-            #         "role": "reader",
-            #         # "allowFileDiscovery": False,
-            #         # "displayName": string,
-            #         # "photoLink": string,
-            #         # "expirationTime": datetime,
-            #         # "teamDrivePermissionDetails": [
-            #         #     {
-            #         #         "teamDrivePermissionType": "file",
-            #         #         "role": "reader",
-            #         #         "inheritedFrom": file_to_upload['id'],
-            #         #         "inherited": True
-            #         #     }
-            #         # ],
-            #         # "permissionDetails": [
-            #         #     {
-            #         #         "permissionType": "file",
-            #         #         "role": "reader",
-            #         #         "inheritedFrom": file_to_upload['id'],
-            #         #         "inherited": True
-            #         #     }
-            #         # ],
-            #         # "deleted": boolean
-            #     }
-            # )
-
-            # permission = file_to_upload.permissions().insert(fileId=file_to_upload['id'], body=new_permission).execute()
-
-            # permissions = file_to_upload.GetPermissions()
-            #
-            # print(permissions)
-
-            # Rimozione file dal file system
-            # if os.path.exists(path_file_to_upload_to_GDrive):
-            #     os.remove(path_file_to_upload_to_GDrive)
-            # import shutil
-            # shutil.move(path_file_to_upload_to_GDrive, "/"+filename)
-
-            # print(drive.GetAbout())
-            # print(file_to_upload)
-            # file2 = drive.CreateFile({'id': file_to_upload['id']})
-            # print(file2)
-            # print(file2.GetPermissions())
-            # print(file_to_upload['parents'][0]['id'])
-            # print(file_to_upload['id'])
+            try:
+                file_to_upload.InsertPermission(
+                    {'type': 'user',
+                     'value': 'l.calabro2@campus.unimib.it',
+                     'role': 'reader'})
+            except:
+                pass
 
             return HttpResponseRedirect(reverse("uploadok2"))
 
@@ -294,14 +249,13 @@ def index2(request):
     return render(request, 'index.html', {'form': form})
 
 
-
-
-
 def uploadok(request):
     return render(request, 'uploadok.html', {'msg': 'Dati caricati correttamente'})
 
+
 def uploadok2(request):
     return render(request, 'uploadok2.html', {'msg': 'Dati caricati correttamente'})
+
 
 def list_file_in_folder(request):
     path_credentials = pathconfigurationfile + "\\" + listconfigurationfile[0]
@@ -361,6 +315,3 @@ def list_file_in_folder2(request):
         # print(file1.GetPermissions())
 
     return HttpResponse("<h1>Lista file Team Drive:</h1><br>" + listafile)
-
-
-
