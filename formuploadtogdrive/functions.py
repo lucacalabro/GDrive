@@ -3,7 +3,7 @@
 # restituisce una tupla con valori letti da ESSE3
 def dati_utente():
     # Questi dati andranno valorizzati leggendo da Esse3
-    MATRICOLA = "012345"
+    MATRICOLA = "012223"
     NOME = "PINCO"
     COGNOME = "PALLINO"
     VERSIONE = "v1"

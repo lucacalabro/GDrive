@@ -24,22 +24,28 @@ def path_and_rename(instance, filename):
 
     # Assegno un indice incrementale controllando i
     # file caricati dalla stessa matricola
+    #
+    # # lista file nella cartella del file system
+    # lf = os.listdir(upload_to)
+    #
+    #
+    #
+    # # lista file senza estensione
+    # def get_matricola(T):
+    #     return T.split('_')[0]
+    #
+    # # Lista matricole per ogni file(ci possono essere doppioni)
+    # lm = list(map(get_matricola, lf))
+    #
+    # # Lista fatta di matricole uguali alla matricola dello studente
+    # lm = [m for m in lm if m == MATRICOLA]
+    #
+    # # Conto quanti elementi ci sono ed assegno l'indice incrementando di 1
+    # indice = len(lm) + 1
 
-    # lista file nella cartella del file system
-    lf = os.listdir(upload_to)
+    queryset = User.objects.filter(matricola=MATRICOLA)
 
-    # lista file senza estensione
-    def get_matricola(T):
-        return T.split('_')[0]
-
-    # Lista matricole per ogni file(ci possono essere doppioni)
-    lm = list(map(get_matricola, lf))
-
-    # Lista fatta di matricole uguali alla matricola dello studente
-    lm = [m for m in lm if m == MATRICOLA]
-
-    # Conto quanti elementi ci sono ed assegno l'indice incrementando di 1
-    indice = len(lm) + 1
+    indice = len(queryset) + 1
 
     filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
 
