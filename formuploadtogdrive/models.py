@@ -24,8 +24,8 @@ def path_and_rename(instance, filename):
 
     # Assegno un indice incrementale controllando i
     # file caricati dalla stessa matricola
-    queryset = User.objects.filter(matricola=MATRICOLA)
-    indice = len(queryset) + 1
+    queryset_count = User.objects.filter(matricola=MATRICOLA).count()
+    indice = queryset_count + 1
 
     filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
 
