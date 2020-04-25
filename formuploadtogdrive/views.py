@@ -56,8 +56,8 @@ def index(request):
 
             # Assegno un indice incrementale controllando i
             # file caricati dalla stessa matricola
-            queryset_count = User.objects.filter(matricola=MATRICOLA).count()
-            indice = queryset_count
+            indice = User.objects.filter(matricola=MATRICOLA).count()
+
 
             filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
 
@@ -127,8 +127,7 @@ def index2(request):
 
             # Assegno un indice incrementale controllando i
             # file caricati dalla stessa matricola
-            queryset_count = User.objects.filter(matricola=MATRICOLA).count()
-            indice = queryset_count
+            indice = User.objects.filter(matricola=MATRICOLA).count()
 
             filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
 
