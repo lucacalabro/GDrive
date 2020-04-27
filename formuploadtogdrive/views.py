@@ -54,8 +54,8 @@ def index(request):
             # cartella del filesystem in cui caricare il file
             path_dir_file = BASE_DIR + '/documents/'
 
-            # Assegno un indice incrementale controllando i
-            # file caricati dalla stessa matricola
+            # Ricavo l'indice controllando quanti file
+            # sono stati caricati per la stessa matricola
             indice = User.objects.filter(matricola=MATRICOLA).count()
 
 
@@ -125,8 +125,8 @@ def index2(request):
             # cartella del filesystem in cui caricare il file
             path_dir_file = BASE_DIR + '/documents/'
 
-            # Assegno un indice incrementale controllando i
-            # file caricati dalla stessa matricola
+            # Ricavo l'indice controllando quanti file
+            # sono stati caricati per la stessa matricola
             indice = User.objects.filter(matricola=MATRICOLA).count()
 
             filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
