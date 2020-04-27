@@ -23,7 +23,7 @@ def path_and_rename(instance, filename):
     ext = filename.split('.')[-1]
 
     # Assegno un indice incrementale controllando i
-    # file caricati dalla stessa matricola
+    # file caricati per la stessa matricola
     indice = User.objects.filter(matricola=MATRICOLA).count() + 1
 
     filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
