@@ -56,3 +56,19 @@ class User(models.Model):
         db_table = "Utenti"
         models.verbose_name_plural = "Utenti"
         models.verbose_name = "Utente"
+
+
+class Uploads(models.Model):
+    title = models.CharField(max_length=500, blank=False)
+    idfile = models.CharField(max_length=500, blank=False)
+    webContentLink = models.CharField(max_length=500, blank=False)
+    alternateLink = models.CharField(max_length=500, blank=False)
+    index = models.IntegerField()
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "Uploads"
+        models.verbose_name_plural = "Uploads"
+        models.verbose_name = "Upload"
+
+

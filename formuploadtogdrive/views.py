@@ -11,7 +11,7 @@ from configurationfile import listfiles as listconfigurationfile
 from configurationfile import path as pathconfigurationfile
 from .forms import UserForm
 from .functions import dati_utente
-from .models import User
+from .models import User, Uploads
 
 
 # Carica su GDrive
@@ -58,7 +58,6 @@ def index(request):
             # sono stati caricati per la stessa matricola
             indice = User.objects.filter(matricola=MATRICOLA).count()
 
-
             filename = '{}_{}_{}_{}_{}.{}'.format(MATRICOLA, NOME, COGNOME, VERSIONE, indice, ext)
 
             path_file_to_upload_to_GDrive = os.path.join(path_dir_file, filename)
@@ -68,6 +67,16 @@ def index(request):
             file_to_upload.SetContentFile(path_file_to_upload_to_GDrive)
 
             file_to_upload.Upload(param={'supportsAllDrives': True})
+
+
+            #Salvo i dati nella cartella degli  uploads
+            new_upload = Uploads(title=file_to_upload['title'],
+                                 idfile=file_to_upload['id'],
+                                 webContentLink=file_to_upload['webContentLink'],
+                                 alternateLink=file_to_upload['alternateLink'],
+                                 index=indice)
+
+            new_upload.save()
 
             # Imposto i permessi per l'utente che carica il file
 
@@ -140,6 +149,15 @@ def index2(request):
 
             # file_to_upload.Upload()
             file_to_upload.Upload(param={'supportsAllDrives': True})
+
+            # Salvo i dati nella cartella degli  uploads
+            new_upload = Uploads(title=file_to_upload['title'],
+                                 idfile=file_to_upload['id'],
+                                 webContentLink=file_to_upload['webContentLink'],
+                                 alternateLink=file_to_upload['alternateLink'],
+                                 index=indice)
+
+            new_upload.save()
 
             # Imposto i permessi per l'utente che carica il file
             try:
